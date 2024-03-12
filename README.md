@@ -6,7 +6,7 @@ modify the example code for your dataset following the steps below.
 
 ## Installation
 
-First create a conda environment using the provided environment.yml file (use `environment_ubuntu.yml` or `environment_macos.yml` depending on the operating system you're using):
+First create a conda environment using the provided environment.yml file:
 ```
 conda env create -f environment_ubuntu.yml
 ```
@@ -42,15 +42,12 @@ Now we can modify the provided example to convert your own data. Follow the step
 also change the name of `example_dataset_dataset_builder.py` by replacing `example_dataset` with your dataset's name (e.g. robo_net_v2_dataset_builder.py)
 and change the class name `ExampleDataset` in the same file to match your dataset's name, using camel case instead of underlines (e.g. RoboNetV2).
 
-2. **Modify Features**: Modify the data fields you plan to store in the dataset. You can find them in the `_info()` method
-of the `ExampleDataset` class. Please add **all** data fields your raw data contains, i.e. please add additional features for 
+2. **Modify Features**: Modify the data fields you plan to store in the dataset. You can find them in `example_dataset/dataset_feature_specs.py`. Please add **all** data fields your raw data contains, i.e. please add additional features for 
 additional cameras, audio, tactile features etc. If your type of feature is not demonstrated in the example (e.g. audio),
 you can find a list of all supported feature types [here](https://www.tensorflow.org/datasets/api_docs/python/tfds/features?hl=en#classes).
-You can store step-wise info like camera images, actions etc in `'steps'` and episode-wise info like `collector_id` in `episode_metadata`.
-Please don't remove any of the existing features in the example (except for `wrist_image` and `state`), since they are required for RLDS compliance.
-Please add detailed documentation what each feature consists of (e.g. what are the dimensions of the action space etc.).
+You can store step-wise info like camera images, actions etc in `rlds.STEPS` and episode-wise info like `collector_id` in `episode_metadata`. Please add detailed documentation what each feature consists of (e.g. what are the dimensions of the action space etc.).
 Note that we store `language_instruction` in every step even though it is episode-wide information for easier downstream usage (if your dataset
-does not define language instructions, you can fill in a dummy string like `pick up something`).
+does not define language instructions, please feel free to remove the `language_instruction` and `language_embedding` features).
 
 3. **Modify Dataset Splits**: The function `_split_generator()` determines the splits of the generated dataset (e.g. training, validation etc.).
 If your dataset defines a train vs validation split, please provide the corresponding information to `_generate_examples()`, e.g. 
@@ -61,14 +58,6 @@ remove the `val` split and only include the `train` split. You can then remove a
 loaded, filled into the episode steps and then yielded as a packaged example. Note that the value of the first return argument,
 `episode_path` in the example, is only used as a sample ID in the dataset and can be set to any value that is connected to the 
 particular stored episode, or any other random value. Just ensure to avoid using the same ID twice.
-
-5. **Provide Dataset Description**: Next, add a bibtex citation for your dataset in `CITATIONS.bib` and add a short description
-of your dataset in `README.md` inside the dataset folder. You can also provide a link to the dataset website and please add a
-few example trajectory images from the dataset for visualization.
-
-6. **Add Appropriate License**: Please add an appropriate license to the repository. 
-Most common is the [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license -- 
-you can copy it from [here](https://github.com/teamdigitale/licenses/blob/master/CC-BY-4.0).
 
 That's it! You're all set to run dataset conversion. Inside the dataset directory, run:
 ```
@@ -91,7 +80,7 @@ tfds build --overwrite --beam_pipeline_options="direct_running_mode=multi_proces
 You can specify the desired number of workers with the `direct_num_workers` argument.
 
 ## Visualize Converted Dataset
-To verify that the data is converted correctly, please visualize the data:
+To verify that the data is converted correctly, please visualize the data using `visualize.ipynb`:
 
 This will display a few random episodes from the dataset with language commands and visualize action and state histograms per dimension.
 
@@ -110,33 +99,3 @@ description of the desired output spec.
 
 2. **Test Transform**: We provide a script to verify that the resulting __transformed__ dataset outputs match the desired
 output spec. Please run the following command: `python3 test_dataset_transform.py <name_of_your_dataset>`
-
-If the test passes successfully, you are ready to upload your dataset!
-
-## Upload Your Data
-
-We provide a Google Cloud bucket that you can upload your data to. First, install `gsutil`, the Google cloud command 
-line tool. You can follow the installation instructions [here](https://cloud.google.com/storage/docs/gsutil_install).
-
-Next, authenticate your Google account with:
-```
-gcloud auth login
-``` 
-This will open a browser window that allows you to log into your Google account (if you're on a headless server, 
-you can add the `--no-launch-browser` flag). Ideally, use the email address that
-you used to communicate with Karl, since he will automatically grant permission to the bucket for this email address. 
-If you want to upload data with a different email address / google account, please shoot Karl a quick email to ask 
-to grant permissions to that Google account!
-
-After logging in with a Google account that has access permissions, you can upload your data with the following 
-command:
-```
-gsutil -m cp -r ~/tensorflow_datasets/<name_of_your_dataset> gs://xembodiment_data
-``` 
-This will upload all data using multiple threads. If your internet connection gets interrupted anytime during the upload
-you can just rerun the command and it will resume the upload where it was interrupted. You can verify that the upload
-was successful by inspecting the bucket [here](https://console.cloud.google.com/storage/browser/xembodiment_data).
-
-The last step is to commit all changes to this repo and send Karl the link to the repo.
-
-**Thanks a lot for contributing your data! :)**
