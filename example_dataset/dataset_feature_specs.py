@@ -1,11 +1,12 @@
 import tensorflow_datasets as tfds
 import numpy as np
+import rlds
 
 SPECS = tfds.features.FeaturesDict(
     {
-        "steps": tfds.features.Dataset(
+        rlds.STEPS: tfds.features.Dataset(
             {
-                "observation": tfds.features.FeaturesDict(
+                rlds.OBSERVATION: tfds.features.FeaturesDict(
                     {
                         "image": tfds.features.Image(
                             shape=(64, 64, 3),
@@ -27,26 +28,26 @@ SPECS = tfds.features.FeaturesDict(
                         ),
                     }
                 ),
-                "action": tfds.features.Tensor(
+                rlds.ACTION: tfds.features.Tensor(
                     shape=(10,),
                     dtype=np.float32,
                     doc="Robot action, consists of [7x joint velocities, "
                     "2x gripper velocities, 1x terminate episode].",
                 ),
-                "discount": tfds.features.Scalar(
+                rlds.DISCOUNT: tfds.features.Scalar(
                     dtype=np.float32, doc="Discount if provided, default to 1."
                 ),
-                "reward": tfds.features.Scalar(
+                rlds.REWARD: tfds.features.Scalar(
                     dtype=np.float32,
                     doc="Reward if provided, 1 on final step for demos.",
                 ),
-                "is_first": tfds.features.Scalar(
+                rlds.IS_FIRST: tfds.features.Scalar(
                     dtype=np.bool_, doc="True on first step of the episode."
                 ),
-                "is_last": tfds.features.Scalar(
+                rlds.IS_LAST: tfds.features.Scalar(
                     dtype=np.bool_, doc="True on last step of the episode."
                 ),
-                "is_terminal": tfds.features.Scalar(
+                rlds.IS_TERMINAL: tfds.features.Scalar(
                     dtype=np.bool_,
                     doc="True on last step of the episode if it is a terminal step, True for demos.",
                 ),
