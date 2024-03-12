@@ -1,6 +1,7 @@
 name: rlds_env
 channels:
   - conda-forge
+  - defaults
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
   - _openmp_mutex=4.5=2_gnu
@@ -40,6 +41,7 @@ dependencies:
       - crcmod==1.7
       - cycler==0.11.0
       - dill==0.3.1.1
+      - dm-reverb==0.14.0
       - dm-tree==0.1.8
       - dnspython==2.4.0
       - docker-pycreds==0.4.0
@@ -81,6 +83,7 @@ dependencies:
       - pathtools==0.1.2
       - pillow==10.0.0
       - plotly==5.15.0
+      - portpicker==1.6.0
       - promise==2.3
       - proto-plus==1.22.3
       - protobuf==4.23.4
@@ -97,6 +100,7 @@ dependencies:
       - regex==2023.6.3
       - requests==2.31.0
       - requests-oauthlib==1.3.1
+      - rlds==0.1.8
       - rsa==4.9
       - sentry-sdk==1.28.1
       - setproctitle==1.3.2
@@ -122,4 +126,4 @@ dependencies:
       - wrapt==1.15.0
       - zipp==3.16.2
       - zstandard==0.21.0
-prefix: /scr/kpertsch/miniconda3/envs/rlds_env
+prefix: /home/quan/miniconda3/envs/rlds_env
