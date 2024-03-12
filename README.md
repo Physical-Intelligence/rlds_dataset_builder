@@ -17,7 +17,7 @@ conda activate rlds_env
 ```
 
 If you want to manually create an environment, the key packages to install are `tensorflow`, 
-`tensorflow_datasets`, `tensorflow_hub`, `apache_beam`, `matplotlib`, `plotly` and `wandb`.
+`tensorflow_datasets`, `tensorflow_hub`, `apache_beam`, `matplotlib`, `plotly`.
 
 
 ## Run Example RLDS Dataset Creation
@@ -91,13 +91,9 @@ tfds build --overwrite --beam_pipeline_options="direct_running_mode=multi_proces
 You can specify the desired number of workers with the `direct_num_workers` argument.
 
 ## Visualize Converted Dataset
-To verify that the data is converted correctly, please run the data visualization script from the base directory:
-```
-python3 visualize_dataset.py <name_of_your_dataset>
-``` 
+To verify that the data is converted correctly, please visualize the data:
+
 This will display a few random episodes from the dataset with language commands and visualize action and state histograms per dimension.
-Note, if you are running on a headless server you can modify `WANDB_ENTITY` at the top of `visualize_dataset.py` and 
-add your own WandB entity -- then the script will log all visualizations to WandB. 
 
 ## Add Transform for Target Spec
 
