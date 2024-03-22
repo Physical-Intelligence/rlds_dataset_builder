@@ -43,11 +43,12 @@ class ExampleDataset(tfds.core.GeneratorBasedBuilder):
             episode = []
             for i, step in enumerate(data):
                 # compute Kona language embedding
-                language_embedding = self._embed([step['language_instruction']])[0].numpy()
+                task = "bus table"
+                language_embedding = self._embed([task])[0].numpy()
 
                 episode.append({
                     'observation': {
-                        'image': step['image'],
+                        'base_image': step['base_image'],
                         'wrist_image': step['wrist_image'],
                         'state': step['state'],
                     },
@@ -57,7 +58,7 @@ class ExampleDataset(tfds.core.GeneratorBasedBuilder):
                     'is_first': i == 0,
                     'is_last': i == (len(data) - 1),
                     'is_terminal': i == (len(data) - 1),
-                    'language_instruction': step['language_instruction'],
+                    'language_instruction': task,
                     'language_embedding': language_embedding,
                 })
 

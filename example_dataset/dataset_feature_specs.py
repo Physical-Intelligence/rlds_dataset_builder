@@ -8,31 +8,29 @@ SPECS = tfds.features.FeaturesDict(
             {
                 rlds.OBSERVATION: tfds.features.FeaturesDict(
                     {
-                        "image": tfds.features.Image(
-                            shape=(64, 64, 3),
+                        "base_image": tfds.features.Image(
+                            shape=(480, 480, 3),
                             dtype=np.uint8,
                             encoding_format="png",
                             doc="Main camera RGB observation.",
                         ),
                         "wrist_image": tfds.features.Image(
-                            shape=(64, 64, 3),
+                            shape=(480, 480, 3),
                             dtype=np.uint8,
                             encoding_format="png",
                             doc="Wrist camera RGB observation.",
                         ),
                         "state": tfds.features.Tensor(
-                            shape=(10,),
+                            shape=(7,),
                             dtype=np.float32,
-                            doc="Robot state, consists of [7x robot joint angles, "
-                            "2x gripper position, 1x door opening angle].",
+                            doc="Robot state, consists of 7 robot joint angles, "
                         ),
                     }
                 ),
                 rlds.ACTION: tfds.features.Tensor(
-                    shape=(10,),
+                    shape=(7,),
                     dtype=np.float32,
-                    doc="Robot action, consists of [7x joint velocities, "
-                    "2x gripper velocities, 1x terminate episode].",
+                    doc="Robot action, consists of 7 robot joint angles, "
                 ),
                 rlds.DISCOUNT: tfds.features.Scalar(
                     dtype=np.float32, doc="Discount if provided, default to 1."
